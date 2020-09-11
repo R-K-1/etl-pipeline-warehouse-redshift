@@ -18,18 +18,39 @@ time_table_drop = "DROP TABLE IF EXISTS times;"
 # CREATE TABLES
 
 staging_events_table_create= ("""
+    CREATE TABLE IF NOT EXISTS staging_events (
+        event_id BIGINT IDENTITY(0,1) NOT NULL,
+        artist VARCHAR(100),
+        auth VARCHAR(20) NOT NULL,
+        firstName VARCHAR(100),
+        gender VARCHAR(1),
+        itemInSession SMALLINT NOT NULL,
+        lastName VARCHAR(100),
+        length DECIMAL(5) NOT NULL,
+        level VARCHAR(20) NOT NULL,
+        location VARCHAR(100),
+        method VARCHAR(10) NOT NULL,
+        page VARCHAR(100) NOT NULL,
+        registration DECIMAL(1),
+        sessionId INTEGER NOT NULL SORTKEY DISTKEY,
+        song VARCHAR(100),
+        status SMALLINT,
+        ts BIGINT NOT NULL,
+        userAgent VARCHAR(200),
+        userId VARCHAR(10)
+    );
 """)
 
 staging_songs_table_create = ("""
     CREATE TABLE IF NOT EXISTS staging_songs (
-        song_id  VARCHAR(20) PRIMARY KEY,
+        song_id VARCHAR(20),
         num_songs SMALLINT,
         title VARCHAR(100) NOT NULL,
         artist_name VARCHAR(100) NOT NULL,
         artist_latitutde DECIMAL(5),
         year SMALLINT,
         duration DECIMAL(5) NOT NULL,
-        artist_id VARCHAR(20) NOT NULL,
+        artist_id VARCHAR(20) NOT NULL SORTKEY DISTKEY,
         artist_longitude DECIMAL(5),
         artist_location VARCHAR(100)
     );
