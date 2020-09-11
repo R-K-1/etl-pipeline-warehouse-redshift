@@ -21,6 +21,18 @@ staging_events_table_create= ("""
 """)
 
 staging_songs_table_create = ("""
+    CREATE TABLE IF NOT EXISTS staging_songs (
+        song_id  VARCHAR(20) PRIMARY KEY,
+        num_songs SMALLINT,
+        title VARCHAR(100) NOT NULL,
+        artist_name VARCHAR(100) NOT NULL,
+        artist_latitutde DECIMAL(5),
+        year SMALLINT,
+        duration DECIMAL(5) NOT NULL,
+        artist_id VARCHAR(20) NOT NULL,
+        artist_longitude DECIMAL(5),
+        artist_location VARCHAR(100)
+    );
 """)
 
 songplay_table_create = ("""
