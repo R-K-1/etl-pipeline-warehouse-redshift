@@ -32,7 +32,7 @@ staging_events_table_create= ("""
         method VARCHAR(10) NOT NULL,
         page VARCHAR(100) NOT NULL,
         registration DECIMAL(1),
-        sessionId INTEGER NOT NULL SORTKEY DISTKEY,
+        sessionId INT NOT NULL SORTKEY DISTKEY,
         song VARCHAR(100),
         status SMALLINT,
         ts BIGINT NOT NULL,
@@ -57,6 +57,17 @@ staging_songs_table_create = ("""
 """)
 
 songplay_table_create = ("""
+    CREATE TABLE IF NOT EXISTS songplays (
+        songplay_id BIGINT IDENTITY(0,1) SORTKEY,
+        start_time TIME NOT NULL,
+        user_id VARCHAR(10) NOT NULL,
+        level VARCHAR(10) NOT NULL,
+        song_id  VARCHAR(20),
+        artist_id VARCHAR(20),
+        session_id INT NOT NULL SORTKEY DISTKEY,
+        location VARCHAR(100),
+        user_agent VARCHAR(200)
+    );
 """)
 
 user_table_create = ("""
