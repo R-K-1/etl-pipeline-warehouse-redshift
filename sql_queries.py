@@ -44,7 +44,7 @@ staging_events_table_create= ("""
         status SMALLINT,
         ts BIGINT NOT NULL,
         userAgent VARCHAR(200),
-        userId VARCHAR(10)
+        userId INT
     );
 """)
 
@@ -67,7 +67,7 @@ songplay_table_create = ("""
     CREATE TABLE IF NOT EXISTS songplays (
         songplay_id BIGINT IDENTITY(0,1) SORTKEY,
         start_time TIME NOT NULL,
-        user_id VARCHAR(10) NOT NULL,
+        user_id INT NOT NULL,
         level VARCHAR(10) NOT NULL,
         song_id  VARCHAR(20),
         artist_id VARCHAR(20),
@@ -79,7 +79,7 @@ songplay_table_create = ("""
 
 user_table_create = ("""
     CREATE TABLE IF NOT EXISTS users (
-        user_id VARCHAR(10) NOT NULL SORT KEY,
+        user_id INT NOT NULL SORTKEY,
         first_name  VARCHAR(50),
         last_name  VARCHAR(50),
         gender  VARCHAR(1),
