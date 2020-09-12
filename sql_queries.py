@@ -151,6 +151,11 @@ user_table_insert = ("""
 """)
 
 song_table_insert = ("""
+    INSERT INTO songs 
+    (song_id, title, artist_id, year, duration)
+    SELECT DISTINCT
+    ss.song_id, ss.title, ss.artist_id, ss.year, ss.duration
+    FROM staging_songs AS ss;
 """)
 
 artist_table_insert = ("""
