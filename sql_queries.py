@@ -159,6 +159,11 @@ song_table_insert = ("""
 """)
 
 artist_table_insert = ("""
+    INSERT INTO artists
+    (artist_id, name, location, latitude, longitude)
+    SELECT  DISTINCT 
+    ss.artist_id, ss.artist_name, ss.artist_location, ss.artist_latitude, ss.artist_longitude
+    FROM staging_songs AS ss;
 """)
 
 time_table_insert = ("""
