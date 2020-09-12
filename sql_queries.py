@@ -71,15 +71,46 @@ songplay_table_create = ("""
 """)
 
 user_table_create = ("""
+    CREATE TABLE IF NOT EXISTS users (
+        user_id VARCHAR(10) NOT NULL SORT KEY,
+        first_name  VARCHAR(50),
+        last_name  VARCHAR(50),
+        gender  VARCHAR(1),
+        level VARCHAR(10) NOT NULL
+    );
 """)
 
 song_table_create = ("""
+    CREATE TABLE IF NOT EXISTS songs (
+        song_id  VARCHAR(20) NOT NULL,
+        title VARCHAR(100) NOT NULL SORTKEY,
+        artist_id VARCHAR(20) NOT NULL,
+        year SMALLINT,
+        duration DECIMAL(5) NOT NULL
+    );
 """)
 
 artist_table_create = ("""
+    CREATE TABLE IF NOT EXISTS artists (
+        artist_id VARCHAR(20) NOT NULL SORTKEY,
+        name VARCHAR(100) NOT NULL,
+        location VARCHAR(100),
+        latitude DECIMAL(5),
+        longitude DECIMAL(5)
+    );
 """)
 
 time_table_create = ("""
+    CREATE TABLE IF NOT EXISTS time (
+        time_id BIGINT IDENTITY(0,1) SORTKEY,
+        start_time TIME NOT NULL,
+        hour SMALLINT,
+        day SMALLINT,
+        week SMALLINT,
+        month SMALLINT,
+        year SMALLINT,
+        weekday SMALLINT
+    );
 """)
 
 # STAGING TABLES
