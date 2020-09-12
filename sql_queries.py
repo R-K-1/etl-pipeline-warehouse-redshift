@@ -139,6 +139,15 @@ staging_songs_copy = ("""
 # FINAL TABLES
 
 songplay_table_insert = ("""
+    INSERT INTO songplays 
+    (start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
+    SELECT  DISTINCT 
+    TIMESTAMP 'epoch' + se.ts/1000 * INTERVAL '1 second'   AS start_time,
+    se.userId, se.level, ss.song_id, ss.artist_id, se.sessionId, se.location, se.userAgent
+    FROM staging_events AS se
+    JOIN staging_songs AS ss
+    ON (se.artist = ss.artist_name)
+    WHERE se.page = 'NextSong';
 """)
 
 user_table_insert = ("""
@@ -167,6 +176,14 @@ artist_table_insert = ("""
 """)
 
 time_table_insert = ("""
+    INSERT INTO time 
+    (start_time, hour, day, week, month, year, weekday)
+    SELECT  DISTINCT TIMESTAMP 'epoch' + se.ts/1000 * INTERVAL '1 second' AS start_time,
+    EXTRACT(hour FROM start_time) AS hour, EXTRACT(day FROM start_time) AS day,
+    EXTRACT(week FROM start_time) AS week, EXTRACT(month FROM start_time) AS month,
+    EXTRACT(year FROM start_time) AS year, EXTRACT(week FROM start_time) AS weekday
+    FROM    staging_events AS se
+    WHERE se.page = 'NextSong';
 """)
 
 # QUERY LISTS
