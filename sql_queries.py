@@ -110,7 +110,7 @@ artist_table_create = ("""
 time_table_create = ("""
     CREATE TABLE IF NOT EXISTS time (
         time_id BIGINT IDENTITY(0,1) SORTKEY,
-        start_time TIME NOT NULL,
+        start_time TIMESTAMP NOT NULL,
         hour SMALLINT,
         day SMALLINT,
         week SMALLINT,
