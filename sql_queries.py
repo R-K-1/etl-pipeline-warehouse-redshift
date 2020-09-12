@@ -5,6 +5,13 @@ import configparser
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
 
+IAM_ROLE_ARN    = config.get('IAM_ROLE', 'ARN')
+LOG_JSONPATH    = config.get('S3', 'LOG_JSONPATH')
+SONG_JSONPATH  = config.get('S3', 'SONG_JSONPATH')
+LOG_DATA        = config.get('S3', 'LOG_DATA')
+SONG_DATA       = config.get('S3', 'SONG_DATA')
+
+
 # DROP TABLES
 
 staging_events_table_drop = "DROP TABLE IF EXISTS staging_events;"
@@ -116,10 +123,18 @@ time_table_create = ("""
 # STAGING TABLES
 
 staging_events_copy = ("""
-""").format()
+    COPY staging_events FROM {}
+    iam_role ''{}'
+    format as json {}
+    STATUPDATE ON
+""").format(LOG_DATA, ARN, LOG_JSONPATH)
 
 staging_songs_copy = ("""
-""").format()
+    COPY staging_songs FROM {}
+    aws_iam_role '{}'
+    json 'auto'
+    STATUPDATE ON
+""").format(SONG_DATA, ARN)
 
 # FINAL TABLES
 
