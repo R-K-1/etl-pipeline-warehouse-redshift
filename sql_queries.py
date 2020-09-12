@@ -127,14 +127,14 @@ staging_events_copy = ("""
     iam_role ''{}'
     format as json {}
     STATUPDATE ON
-""").format(LOG_DATA, ARN, LOG_JSONPATH)
+""").format(LOG_DATA, IAM_ROLE_ARN, LOG_JSONPATH)
 
 staging_songs_copy = ("""
     COPY staging_songs FROM {}
     aws_iam_role '{}'
     json 'auto'
     STATUPDATE ON
-""").format(SONG_DATA, ARN)
+""").format(SONG_DATA, IAM_ROLE_ARN)
 
 # FINAL TABLES
 
