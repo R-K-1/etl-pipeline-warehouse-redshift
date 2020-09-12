@@ -142,6 +142,12 @@ songplay_table_insert = ("""
 """)
 
 user_table_insert = ("""
+    INSERT INTO users
+    (user_id, first_name, last_name, gender, level)
+    SELECT DISTINCT
+    se.userId, se.firstName, se.lastName, se.gender, se.level
+    FROM staging_events AS se
+    WHERE se.page = 'NextSong';
 """)
 
 song_table_insert = ("""
