@@ -71,7 +71,7 @@ songplay_table_create = ("""
         level VARCHAR(10) NOT NULL,
         song_id  VARCHAR(20),
         artist_id VARCHAR(20),
-        session_id INT NOT NULL SORTKEY DISTKEY,
+        session_id INT NOT NULL DISTKEY,
         location VARCHAR(100),
         user_agent VARCHAR(200)
     );
