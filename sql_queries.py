@@ -6,8 +6,7 @@ config = configparser.ConfigParser()
 config.read('dwh.cfg')
 
 IAM_ROLE_ARN    = config.get('IAM_ROLE', 'ARN')
-LOG_JSONPATH    = config.get('S3', 'LOG_JSONPATH')
-SONG_JSONPATH  = config.get('S3', 'SONG_JSONPATH')
+LOG_JSON_PATH    = config.get('S3', 'LOG_JSONPATH')
 LOG_DATA        = config.get('S3', 'LOG_DATA')
 SONG_DATA       = config.get('S3', 'SONG_DATA')
 
@@ -27,39 +26,39 @@ time_table_drop = "DROP TABLE IF EXISTS times;"
 staging_events_table_create= ("""
     CREATE TABLE IF NOT EXISTS staging_events (
         event_id BIGINT IDENTITY(0,1) NOT NULL,
-        artist VARCHAR(100),
-        auth VARCHAR(20) NOT NULL,
-        firstName VARCHAR(100),
+        artist VARCHAR(500),
+        auth VARCHAR(50),
+        firstName VARCHAR(500),
         gender VARCHAR(1),
-        itemInSession SMALLINT NOT NULL,
-        lastName VARCHAR(100),
-        length DECIMAL(5) NOT NULL,
-        level VARCHAR(20) NOT NULL,
-        location VARCHAR(100),
-        method VARCHAR(10) NOT NULL,
-        page VARCHAR(100) NOT NULL,
-        registration DECIMAL(1),
+        itemInSession SMALLINT,
+        lastName VARCHAR(500),
+        length DECIMAL(9, 5),
+        level VARCHAR(50),
+        location VARCHAR(500),
+        method VARCHAR(50),
+        page VARCHAR(100),
+        registration DECIMAL(16, 1),
         sessionId INT NOT NULL SORTKEY DISTKEY,
-        song VARCHAR(100),
+        song VARCHAR(500),
         status SMALLINT,
         ts BIGINT NOT NULL,
-        userAgent VARCHAR(200),
+        userAgent VARCHAR(500),
         userId INT
     );
 """)
 
 staging_songs_table_create = ("""
     CREATE TABLE IF NOT EXISTS staging_songs (
-        song_id VARCHAR(20),
+        song_id VARCHAR(50) NOT NULL,
         num_songs SMALLINT,
-        title VARCHAR(100) NOT NULL,
-        artist_name VARCHAR(100) NOT NULL,
-        artist_latitutde DECIMAL(5),
+        title VARCHAR(500),
+        artist_name VARCHAR(500),
+        artist_latitude DECIMAL(10, 5),
         year SMALLINT,
-        duration DECIMAL(5) NOT NULL,
-        artist_id VARCHAR(20) NOT NULL SORTKEY DISTKEY,
-        artist_longitude DECIMAL(5),
-        artist_location VARCHAR(100)
+        duration DECIMAL(9, 5) NOT NULL,
+        artist_id VARCHAR(50) NOT NULL SORTKEY DISTKEY,
+        artist_longitude DECIMAL(10, 5),
+        artist_location VARCHAR(500)
     );
 """)
 
@@ -68,48 +67,48 @@ songplay_table_create = ("""
         songplay_id BIGINT IDENTITY(0,1) SORTKEY,
         start_time TIMESTAMP NOT NULL,
         user_id INT NOT NULL,
-        level VARCHAR(10) NOT NULL,
-        song_id  VARCHAR(20),
-        artist_id VARCHAR(20),
+        level VARCHAR(50) NOT NULL,
+        song_id  VARCHAR(50),
+        artist_id VARCHAR(50),
         session_id INT NOT NULL DISTKEY,
-        location VARCHAR(100),
-        user_agent VARCHAR(200)
+        location VARCHAR(500),
+        user_agent VARCHAR(500)
     );
 """)
 
 user_table_create = ("""
     CREATE TABLE IF NOT EXISTS users (
         user_id INT NOT NULL SORTKEY,
-        first_name  VARCHAR(50),
-        last_name  VARCHAR(50),
+        first_name  VARCHAR(500),
+        last_name  VARCHAR(500),
         gender  VARCHAR(1),
-        level VARCHAR(10) NOT NULL
+        level VARCHAR(50)
     );
 """)
 
 song_table_create = ("""
     CREATE TABLE IF NOT EXISTS songs (
-        song_id  VARCHAR(20) NOT NULL,
-        title VARCHAR(100) NOT NULL SORTKEY,
-        artist_id VARCHAR(20) NOT NULL,
+        song_id  VARCHAR(50) NOT NULL,
+        title VARCHAR(500) NOT NULL SORTKEY,
+        artist_id VARCHAR(50) NOT NULL,
         year SMALLINT,
-        duration DECIMAL(5) NOT NULL
+        duration DECIMAL(9, 5) NOT NULL
     );
 """)
 
 artist_table_create = ("""
     CREATE TABLE IF NOT EXISTS artists (
-        artist_id VARCHAR(20) NOT NULL SORTKEY,
-        name VARCHAR(100) NOT NULL,
-        location VARCHAR(100),
-        latitude DECIMAL(5),
-        longitude DECIMAL(5)
+        artist_id VARCHAR(50) NOT NULL SORTKEY,
+        name VARCHAR(500),
+        location VARCHAR(500),
+        latitude DECIMAL(10, 5),
+        longitude DECIMAL(10, 5)
     );
 """)
 
 time_table_create = ("""
     CREATE TABLE IF NOT EXISTS time (
-        time_id BIGINT IDENTITY(0,1) SORTKEY,
+        time_id BIGINT IDENTITY(0,1) NOT NULL SORTKEY,
         start_time TIMESTAMP NOT NULL,
         hour SMALLINT,
         day SMALLINT,
@@ -124,14 +123,14 @@ time_table_create = ("""
 
 staging_events_copy = ("""
     COPY staging_events FROM {}
-    iam_role ''{}'
+    iam_role {}
     format as json {}
     STATUPDATE ON
-""").format(LOG_DATA, IAM_ROLE_ARN, LOG_JSONPATH)
+""").format(LOG_DATA, IAM_ROLE_ARN, LOG_JSON_PATH)
 
 staging_songs_copy = ("""
     COPY staging_songs FROM {}
-    aws_iam_role '{}'
+    iam_role {}
     json 'auto'
     STATUPDATE ON
 """).format(SONG_DATA, IAM_ROLE_ARN)
