@@ -1,6 +1,5 @@
 import configparser
 
-
 # CONFIG
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
@@ -9,7 +8,6 @@ IAM_ROLE_ARN    = config.get('IAM_ROLE', 'ARN')
 LOG_JSON_PATH    = config.get('S3', 'LOG_JSONPATH')
 LOG_DATA        = config.get('S3', 'LOG_DATA')
 SONG_DATA       = config.get('S3', 'SONG_DATA')
-
 
 # DROP TABLES
 
